@@ -1,5 +1,5 @@
 include LICENSE
 include README.md
-recursive-include entur_monitor/static *
-recursive-include entur_monitor/templates *
-recursive-include entur_monitor/management *
+recursive-include rutedata/static *
+recursive-include rutedata/templates *
+recursive-include rutedata/management *
