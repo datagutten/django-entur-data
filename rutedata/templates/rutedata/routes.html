@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Routes</title>
+</head>
+<body>
+{% for route in routes %}
+    <a href="{% url 'rutedata:journeys_for route' route=route.id %}">{{ route }}</a><br />
+{% endfor %}
+</body>
+</html>

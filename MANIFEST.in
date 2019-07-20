@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+recursive-include entur_monitor/static *
+recursive-include entur_monitor/templates *

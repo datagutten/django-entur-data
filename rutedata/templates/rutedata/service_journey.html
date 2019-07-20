@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Journeys</title>
+</head>
+<body>
+{% for journey in journeys %}
+    {{ journey }}<br />
+    {{ journey.first_passing.time }}&nbsp;
+    {{ journey.first_passing.point.quay.Stop.Name }}<br />
+    {{ journey.last_passing.time }}&nbsp;
+    {{ journey.last_passing.point.quay.Stop.Name }}<br />
+{% endfor %}
+</body>
+</html>

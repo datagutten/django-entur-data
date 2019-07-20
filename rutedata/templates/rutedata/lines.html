@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lines</title>
+</head>
+<body>
+{% for line in lines %}
+    <a href="{% url 'rutedata:routes_for_line' line=line.id %}">{{ line }}</a><br />
+{% endfor %}
+</body>
+</html>
