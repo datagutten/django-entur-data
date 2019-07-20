@@ -25,3 +25,11 @@ install:
 # command to run tests
 script:
   - tox -e $TOX_ENV
+deploy:
+  provider: pypi
+  user: datagutten
+  password:
+    secure: 1lTIpFDNlYrKTawAFH6RQO5VhFDJ97e3R5TchhspHZe+8CBXBY2PvKLcqWxDqDyhMo8m9Ln9zo4Z7QuL8zxDyDOVk8htatviM4b0woUh25uxewHMGwnvlKZCFfk/9RoRWw+NYRPU5Puaa4FjsO+zENs28Tgviovk/Cnt6GTcO6yiIBy356Ny/VKS2W/89al9zg0hRG2bQ1WzdEk106Ov36aaIE7pXQtF0c8i98ref4ccB5WIYgm/BYJezpE1T24gzkajgb8HzGLUrR2ZR0MvGlJ4YjE0JMdt/p4GxygDqBXbrtglRkaZGqQ7x4QyCPwPczw0el7yuuoHLZxjEN+0FXQIpQtBhN4Qehtx0RQtJXWMiDaCx/lySLIyOdPVAd/boZgOCOzYSe2FUmn8YjFlH9IuLmtmu9wknGqItDFg9G4IT3ybS2/v65asoY5xUUjsmmZkFnZ+9cFGcliQU7wlXwmTUEIaE/QvpPrFrJxYsRtGKwq2F3/DuBdsLASJTLmUy9MKcaetwbRIf8X1A8cCXz5snonWeJHx9pRqRmSdHNJeWWkpLJabkxBkqx0M9hi22X2rL8qE0GUoOepwTJs9wKMOJYvnl6GrUM3I1pjs44gvFUluW2HF/0v1/NrgXX/N++ML5O19rs+O9+GaQl9SGnsKeeMPZFY+3njy54+anL0=
+  on:
+    tags: true
+  skip_existing: true
