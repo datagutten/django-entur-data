@@ -1,4 +1,5 @@
 import os
+
 from setuptools import find_packages, setup
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
@@ -23,7 +24,7 @@ setup(
         'Framework :: Django',
         'Framework :: Django :: 2.1',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GPL',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.5',
