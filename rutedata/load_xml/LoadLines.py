@@ -88,7 +88,7 @@ class LoadLines(LoadXml):
             './/netex:journeyPatterns/netex:JourneyPattern[@id="%s"]' % journey_id,
             self.namespaces)
 
-    def load_service_journeys(self, root):
+    def load_service_journeys(self, root, output=False):
         """
         Load ServiceJourney
         Requires Line, Route
@@ -98,10 +98,15 @@ class LoadLines(LoadXml):
         print('Loading ServiceJourney and PassingTime')
         valid_journeys = []
         lines = []
-        for journey in root.findall(
+        journeys = root.findall(
                 './/netex:frames/netex:TimetableFrame/netex:vehicleJourneys/netex:ServiceJourney',
-                self.namespaces):
-
+                self.namespaces)
+        total = len(journeys)
+        count = 1
+        for journey in journeys:
+            if output:
+                print('Loading %d of %d' % (count, total), end='\r')
+            count += 1
             journey_id = journey.get('id')
             valid_journeys.append(journey_id)
 
@@ -136,8 +141,9 @@ class LoadLines(LoadXml):
                                         line=line,
                                         route=route)
             journey_db.save()
-            print(journey_db)
             self.load_passings(journey, journey_db)
+        if output:
+            print("")
         self.cleanup_journeys(lines, valid_journeys)
 
     @staticmethod
@@ -190,14 +196,14 @@ class LoadLines(LoadXml):
 
             passing.save()
 
-    def load_lines(self, line_filter=None, load_lines=True, load_routes=True, load_service_journeys=True, debug=False):
+    def load_lines(self, line_filter=None, load_lines=True, load_routes=True, load_service_journeys=True, output=False):
         zip_file = self.load_netex(None)
         for file in zip_file.namelist():
             if file.find('RUT_RUT-Line') == -1:
                 continue
             if line_filter and file.find(line_filter) == -1:
                 continue
-            if debug:
+            if output:
                 print(file)
             xml_bytes = zip_file.read(file)
             root = xml.etree.ElementTree.fromstring(xml_bytes)
@@ -206,6 +212,6 @@ class LoadLines(LoadXml):
             if load_routes:
                 self.load_route(root)
             if load_service_journeys:
-                self.load_service_journeys(root)
+                self.load_service_journeys(root, output)
             # break
             # self.load_routes_and_point_on_route(root)

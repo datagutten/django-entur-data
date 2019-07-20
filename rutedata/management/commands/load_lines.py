@@ -9,4 +9,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Lines
         load = LoadLines()
-        load.load_lines()
+        load.load_lines(output=True)
