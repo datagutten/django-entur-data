@@ -1,7 +1,7 @@
 import re
 import xml.etree.ElementTree
 
-from rutedata.models import Line, PointOnRoute, Quay, Route, ServiceJourney, PassingTime
+from rutedata.models import Line, PassingTime, PointOnRoute, Quay, Route, ServiceJourney
 from .load_xml import LoadXml
 
 
@@ -114,9 +114,9 @@ class LoadLines(LoadXml):
             line_ref = self.get(journey, 'LineRef')
             try:
                 line = Line.objects.get(id=line_ref)
-            except Line.DoesNotExist:
+            except Line.DoesNotExist as e:
                 print('Line %s does not exist' % line_ref)
-                return
+                raise e
             lines.append(line)
 
             journey_pattern = self.journey_pattern(
@@ -169,12 +169,12 @@ class LoadLines(LoadXml):
 
             try:
                 point = PointOnRoute.objects.get(Route__id=route_id, order=keys[3])
-            except PointOnRoute.MultipleObjectsReturned:
+            except PointOnRoute.MultipleObjectsReturned as e:
                 print('Multiple PointOnRoute found: Route__id=%s, order=%s' % (route_id, keys[3]))
-                point = PointOnRoute.objects.filter(Route__id=route_id, order=keys[3]).first()
-            except PointOnRoute.DoesNotExist:
+                raise e
+            except PointOnRoute.DoesNotExist as e:
                 print('PointOnRoute with Route__id %s and order %s does not exist' % (route_id, keys[3]))
-                return
+                raise e
 
             passing = PassingTime(id=journey_id,
                                   service_journey=journey_db,
