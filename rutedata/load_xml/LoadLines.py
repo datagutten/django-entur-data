@@ -154,16 +154,25 @@ class LoadLines(LoadXml):
                     print('Invalid journey: %s' % journey.id)
                     journey.delete()
 
-    def load_passings(self, journey, journey_db):
+    def load_passings(self, journey, journey_db=None):
         """
         Load PassingTime
         Called in loop by load_service_journeys
         Requires PointOnRoute
-        :param journey:
-        :param journey_db:
+        :param xml.etree.ElementTree.Element journey:
+        :param ServiceJourney journey_db:
         :return:
         """
-        passings = journey.findall('.//netex:passingTimes/netex:TimetabledPassingTime', self.namespaces)
+
+        passings = journey.findall(
+            './/netex:passingTimes/netex:TimetabledPassingTime',
+            self.namespaces)
+        if journey_db is None:
+            journey_db = ServiceJourney.objects.get(id=journey.get('id'))
+
+        if not passings:
+            raise ValueError('No passings found')
+
         for timetabled_passing_time in passings:
             journey_id = timetabled_passing_time.get('id')
             point_ref = timetabled_passing_time.find('netex:StopPointInJourneyPatternRef',
