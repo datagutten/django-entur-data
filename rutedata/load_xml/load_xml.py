@@ -14,8 +14,12 @@ class LoadXml:
 
     @staticmethod
     def load_file(url):
-        response = requests.get(url)
-        zip_bytes = io.BytesIO(response.content)
+        local_file = '%s/zip/%s' % (os.path.dirname(__file__), os.path.basename(url))
+        if not os.path.exists(local_file):
+            response = requests.get(url)
+            zip_bytes = io.BytesIO(response.content)
+        else:
+            zip_bytes = local_file
         zip_file = zipfile.ZipFile(zip_bytes)
         return zip_file
 
