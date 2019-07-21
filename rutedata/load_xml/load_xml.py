@@ -1,5 +1,6 @@
 import datetime
 import io
+import os
 import xml.etree.ElementTree
 import xml.etree.ElementTree
 import zipfile
@@ -18,8 +19,8 @@ class LoadXml:
         zip_file = zipfile.ZipFile(zip_bytes)
         return zip_file
 
-    def load_netex(self, file='_RUT_shared_data.xml'):
-        url = 'https://storage.googleapis.com/marduk-production/outbound/netex/rb_rut-aggregated-netex.zip'
+    def load_netex(self, file='_RUT_shared_data.xml', district='rut'):
+        url = 'https://storage.googleapis.com/marduk-production/outbound/netex/rb_%s-aggregated-netex.zip' % district
         zip_file = self.load_file(url)
         if file:
             xml_bytes = zip_file.read(file)
@@ -27,8 +28,8 @@ class LoadXml:
         else:
             return zip_file
 
-    def load_tiamat(self):
-        url = 'https://storage.googleapis.com/marduk-production/tiamat/Oslo_og_Akershus_latest.zip'
+    def load_tiamat(self, file='Oslo_og_Akershus_latest.zip'):
+        url = 'https://storage.googleapis.com/marduk-production/tiamat/%s' % file
         zip_file = self.load_file(url)
         xml_file = zip_file.namelist()[0]
         xml_bytes = zip_file.read(xml_file)
