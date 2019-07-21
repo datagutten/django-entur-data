@@ -1,6 +1,7 @@
-from .load_xml import LoadXml
-from rutedata.models import Stop, Quay, GroupOfStopPlaces
 from django.db.utils import IntegrityError
+
+from rutedata.models import GroupOfStopPlaces, Quay, Stop
+from .load_xml import LoadXml
 
 
 class LoadStops(LoadXml):
@@ -64,9 +65,12 @@ class LoadStops(LoadXml):
                         print('Missing adjacent stop %s' % adjacent)
 
                 stop_db.TransportMode = self.text(stop, 'TransportMode')
-                stop_db.Zone = stop.find(
-                    './netex:tariffZones/netex:TariffZoneRef',
-                    self.namespaces).get('ref')
+                try:
+                    stop_db.Zone = stop.find(
+                        './netex:tariffZones/netex:TariffZoneRef',
+                        self.namespaces).get('ref')
+                except AttributeError:
+                    pass
 
                 topographic_place_ref = stop.find('netex:TopographicPlaceRef',
                                                   self.namespaces).get('ref')
