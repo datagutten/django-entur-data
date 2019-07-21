@@ -23,17 +23,22 @@ class LoadStops(LoadXml):
             topographic_place_ref)
 
     def child_stops(self, stop_id):
-        return self.root.findall('./netex:dataObjects/netex:SiteFrame/netex:stopPlaces/netex:StopPlace/netex:ParentSiteRef[@ref="%s"]/..' % stop_id, self.namespaces)
+        return self.root.findall(
+            './netex:dataObjects/netex:SiteFrame/netex:stopPlaces/netex:StopPlace/netex:ParentSiteRef[@ref="%s"]/..' %
+            stop_id, self.namespaces)
         # NSR:StopPlace:58191
 
     def is_parent(self, stop):
-        parent = self.text(stop, 'keyList/netex:KeyValue/netex:Key[.="IS_PARENT_STOP_PLACE"]/../netex:Value')
+        parent = self.text(
+            stop,
+            'keyList/netex:KeyValue/netex:Key[.="IS_PARENT_STOP_PLACE"]/../netex:Value')
         if parent == 'true':
             return True
         elif parent == 'false':
             return False
         else:
-            raise ValueError('Invalid value for IS_PARENT_STOP_PLACE: %s' % parent)
+            raise ValueError('Invalid value for IS_PARENT_STOP_PLACE: %s' %
+                             parent)
 
     def load_stops(self, filter_stop_id=None):
         """
@@ -53,9 +58,6 @@ class LoadStops(LoadXml):
                 stop_db.Name = self.text(stop, 'Name')
                 stop_db.Description = self.text(stop, 'Description')
                 [stop_db.latitude, stop_db.longitude] = self.coordinates(stop)
-
-
-
 
                 adjacent = self.text(stop, 'netex:adjacentSites/netex:SiteRef')
                 if adjacent is not None:
