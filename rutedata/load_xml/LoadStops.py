@@ -165,4 +165,4 @@ class LoadStops(LoadXml):
                     # print('%s is member of %s' % (stop, group_db))
                     group_db.members.add(stop)
                 except Stop.DoesNotExist:
-                    print('Stop %s not found' % member.get('ref'))
+                    print('Stop %s member of %s not found' % (member.get('ref'), group_db))
