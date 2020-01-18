@@ -167,6 +167,8 @@ class PassingTime(models.Model):
     point = models.ForeignKey(PointOnRoute, on_delete=models.CASCADE)
     departure_time = models.TimeField(null=True, blank=True)
     arrival_time = models.TimeField(null=True, blank=True)
+    line = models.ForeignKey(Line, on_delete=models.CASCADE,
+                             db_index=True, blank=True, null=True)
 
     def time(self):
         if self.departure_time:
