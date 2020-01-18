@@ -18,10 +18,11 @@ install:
 - pip install tox
 script:
 - tox -e $TOX_ENV
+after_script:
+- git stash --all
+- sed -i "s/@@version@@/${TRAVIS_TAG}/g" setup.py
 deploy:
   skip_cleanup: true
-  - git stash --all
-  - sed -i "s/@@version@@/${TRAVIS_TAG}/g" setup.py
   provider: pypi
   user: datagutten
   password:
