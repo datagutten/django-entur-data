@@ -46,6 +46,9 @@ class Line(models.Model):
                                              blank=True, null=True)
     Colour = models.CharField(max_length=200, blank=True, null=True)
 
+    def __str__(self):
+        return '%s %s' % (self.PublicCode, self.Name)
+
 
 class Quay(models.Model):
     # Brukes med ulike prefix, med nummer går igjen, f.eks 6021
