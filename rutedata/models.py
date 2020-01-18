@@ -138,7 +138,7 @@ class ServiceJourney(models.Model):
     id = models.CharField(max_length=50, primary_key=True)
     name = models.CharField(max_length=100)
     private_code = models.CharField(max_length=8)
-    line = models.ForeignKey(Line, on_delete=models.CASCADE)
+    line = models.ForeignKey(Line, on_delete=models.CASCADE, db_index=True)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
 
     def passings(self):
