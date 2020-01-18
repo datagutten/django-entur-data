@@ -10,6 +10,8 @@ class LoadStopsTest(TestCase):
         # super().__init__(method_name)
         load_stops = LoadStops('30_Viken_latest.zip')
         load_stops.load_stops()
+        load_stops = LoadStops('03_Oslo_latest.zip')
+        load_stops.load_stops()
 
         load = LoadLines()
         load.load_lines('RUT_RUT-Line-83', load_service_journeys=False)
