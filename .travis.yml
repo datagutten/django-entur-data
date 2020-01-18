@@ -21,6 +21,7 @@ matrix:
   - python: nightly
 install:
 - pip install tox
+- sed -i "s/@@version@@/${TRAVIS_TAG}/g" setup.py
 script:
 - tox -e $TOX_ENV
 deploy:
