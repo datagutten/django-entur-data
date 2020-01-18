@@ -18,7 +18,7 @@ install:
 - pip install tox
 script:
 - tox -e $TOX_ENV
-after_script:
+before_deploy:
 - git stash --all
 - sed -i "s/@@version@@/${TRAVIS_TAG}/g" setup.py
 deploy:
