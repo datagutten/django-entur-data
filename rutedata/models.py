@@ -162,7 +162,8 @@ class ServiceJourney(models.Model):
 class PassingTime(models.Model):
     id = models.CharField(max_length=60, primary_key=True)
     service_journey = models.ForeignKey(ServiceJourney,
-                                        on_delete=models.CASCADE)
+                                        on_delete=models.CASCADE,
+                                        db_index=True)
     point = models.ForeignKey(PointOnRoute, on_delete=models.CASCADE)
     departure_time = models.TimeField(null=True, blank=True)
     arrival_time = models.TimeField(null=True, blank=True)
