@@ -23,6 +23,7 @@ class LoadXml:
         local_file = '%s/zip/%s' % (os.path.dirname(__file__), os.path.basename(url))
         if not os.path.exists(local_file):
             response = requests.get(url)
+            response.raise_for_status()
             zip_bytes = io.BytesIO(response.content)
         else:
             zip_bytes = local_file
