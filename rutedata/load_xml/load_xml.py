@@ -91,7 +91,9 @@ class LoadXml:
         point = root.find('.//netex:StopPointInJourneyPattern[@id="%s"]' % stop_point_id, self.namespaces)
         return self.get(point, 'ScheduledStopPointRef')
 
-    def load_tiamat(self, file='Oslo_og_Akershus_latest.zip'):
+    def load_tiamat(self, file=None):
+        if not file:
+            file = '03_Oslo_latest.zip'
         url = 'https://storage.googleapis.com/marduk-production/tiamat/%s' % file
         zip_file = self.load_file(url)
         xml_file = zip_file.namelist()[0]

@@ -6,14 +6,14 @@ from rutedata.models import Stop
 class LoadStopsTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        load = LoadStops()
+        load = LoadStops('03_Oslo_latest.zip')
         load.load_stops()
 
     def test_topographic_place(self):
-        load = LoadStops()
+        load = LoadStops('03_Oslo_latest.zip')
         self.assertIsNotNone(load.topographic_places)
-        name = load.topographic_place('KVE:TopographicPlace:0217')
-        self.assertEqual('Oppegård', name)
+        name = load.topographic_place('KVE:TopographicPlace:0301')
+        self.assertEqual('Oslo', name)
 
     def test_child_stops(self):
         """

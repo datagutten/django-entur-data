@@ -5,8 +5,8 @@ from .load_xml import LoadXml
 
 
 class LoadStops(LoadXml):
-    def __init__(self):
-        self.root = self.load_tiamat()
+    def __init__(self, file=None):
+        self.root = self.load_tiamat(file)
         self.topographic_places = self.root.find(
             './netex:dataObjects/netex:SiteFrame/netex:topographicPlaces',
             self.namespaces)

@@ -8,7 +8,7 @@ class LoadStopsTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # super().__init__(method_name)
-        load_stops = LoadStops()
+        load_stops = LoadStops('30_Viken_latest.zip')
         load_stops.load_stops()
 
         load = LoadLines()
