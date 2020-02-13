@@ -2,10 +2,17 @@ import re
 import xml.etree.ElementTree
 
 from rutedata.models import Line, PassingTime, PointOnRoute, Quay, Route, ServiceJourney
+from .line_helper import LineHelper
 from .load_xml import LoadXml
 
 
 class LoadLines(LoadXml):
+    skip = []
+    line_db = None
+
+    def __init__(self):
+        self.helper = LineHelper()
+
     def load_line(self, root):
         """
         Load Line
@@ -83,11 +90,6 @@ class LoadLines(LoadXml):
             )
             point_db.save()
 
-    def journey_pattern(self, line_root, journey_id):
-        return line_root.find(
-            './/netex:journeyPatterns/netex:JourneyPattern[@id="%s"]' % journey_id,
-            self.namespaces)
-
     def load_service_journeys(self, root, output=False):
         """
         Load ServiceJourney
@@ -124,7 +126,7 @@ class LoadLines(LoadXml):
                 raise e
             lines.append(line)
 
-            journey_pattern = self.journey_pattern(
+            journey_pattern = self.helper.journey_pattern(
                 root,
                 self.get(journey, 'JourneyPatternRef')
             )
