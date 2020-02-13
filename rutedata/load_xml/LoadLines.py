@@ -100,6 +100,7 @@ class LoadLines(LoadXml):
         Load ServiceJourney
         Requires Line, Route
         :param root:
+        :param output:
         :return:
         """
         print('Loading ServiceJourney and PassingTime')
@@ -110,11 +111,19 @@ class LoadLines(LoadXml):
                 self.namespaces)
         total = len(journeys)
         count = 1
+
+        existing_journeys = self.existing_service_journeys(self.line_db)
+
         for journey in journeys:
             if output:
                 print('Loading %d of %d' % (count, total), end='\r')
             count += 1
             journey_id = journey.get('id')
+            if journey_id in existing_journeys:
+                index = existing_journeys.index(journey_id)
+                existing_journeys.pop(index)
+                continue
+            print(journey_id)
             valid_journeys.append(journey_id)
 
             # name = journey.find('netex:Name', self.namespaces).text
@@ -148,9 +157,10 @@ class LoadLines(LoadXml):
                                         line=line,
                                         route=route)
             journey_db.save()
-            self.load_passings(journey, journey_db)
+            self.load_passings(journey=journey, journey_db=journey_db)
         if output:
             print("")
+        print('Journeys not found: ', existing_journeys)
         self.cleanup_journeys(lines, valid_journeys)
 
     @staticmethod
