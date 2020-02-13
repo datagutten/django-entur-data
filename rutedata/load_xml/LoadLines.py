@@ -175,6 +175,10 @@ class LoadLines(LoadXml):
         passings = PassingTime.objects.filter(service_journey=journey_db).values_list('id', flat=True)
         return list(passings)
 
+    def existing_service_journeys(self, line_db):
+        journeys = ServiceJourney.objects.filter(line=line_db).values_list('id', flat=True)
+        return list(journeys)
+
     def load_passings(self, journey, journey_db=None, output=False):
         """
         Load PassingTime
@@ -242,7 +246,19 @@ class LoadLines(LoadXml):
             count += 1
             passing.save()
 
-    def load_lines(self, line_filter=None, load_lines=True, load_routes=True, load_service_journeys=True, output=False):
+    def load_passings_journeys(self, line_root, output=False):
+        journeys = self.helper.vehicle_journeys(line_root)
+        total = len(journeys)
+
+        count = 1
+        for journey in journeys:
+            if output:
+                print('Loading passings for journey %d of %d' % (count, total), end='\r')
+
+            self.load_passings(journey=journey, output=False)
+            count += 1
+
+    def load_lines(self, line_filter=None, load_lines=True, load_routes=True, load_service_journeys=True, load_passings_journeys=True, output=False):
         zip_file = self.load_netex(None)
         for file in zip_file.namelist():
             if file.find('RUT_RUT-Line') == -1:
@@ -253,11 +269,20 @@ class LoadLines(LoadXml):
                 print(file)
             xml_bytes = zip_file.read(file)
             root = xml.etree.ElementTree.fromstring(xml_bytes)
-            if load_lines:
-                self.load_line(root)
-            if load_routes:
-                self.load_route(root)
-            if load_service_journeys:
-                self.load_service_journeys(root, output)
+            self.line_db = self.load_line(root)
+
+            try:
+                if load_routes:
+                    self.load_route(root)
+                if load_service_journeys:
+                    self.load_service_journeys(root, output)
+                # journey = ServiceJourney.objects.get(id='RUT:ServiceJourney:83-116601-13185420')
+                # self.load_passings(root=root, journey_db=journey)
+                if load_passings_journeys:
+                    self.load_passings_journeys(root)
+            except Quay.DoesNotExist:
+                print('Quay not found, skipping %s' % file)
+            except ServiceJourney.DoesNotExist:
+                print('ServiceJourney not found, skipping %s' % file)
             # break
             # self.load_routes_and_point_on_route(root)
