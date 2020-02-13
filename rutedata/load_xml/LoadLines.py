@@ -26,6 +26,8 @@ class LoadLines(LoadXml):
                            PublicCode=line.find('netex:PublicCode', self.namespaces).text,
                            Colour=line.find('./netex:Presentation/netex:Colour', self.namespaces).text)
             line_db.save()
+            self.line_db = line_db
+            return line_db
 
     def load_route(self, root):
         """
