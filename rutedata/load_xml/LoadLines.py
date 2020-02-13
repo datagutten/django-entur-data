@@ -229,6 +229,7 @@ class LoadLines(LoadXml):
             passing = PassingTime(id=journey_id,
                                   service_journey=journey_db,
                                   point=point,
+                                  line=journey_db.line,
                                   )
 
             departure = timetabled_passing_time.find('netex:DepartureTime', self.namespaces)
