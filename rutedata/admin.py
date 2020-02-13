@@ -50,7 +50,7 @@ class QuayAdmin(admin.ModelAdmin):
     list_filter = ('Stop__TopographicPlace', 'Stop__TransportMode')
 
 
-# admin.site.register(Quay, QuayAdmin)
+admin.site.register(Quay, QuayAdmin)
 
 
 admin.site.register(Line)
