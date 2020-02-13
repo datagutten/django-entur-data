@@ -79,7 +79,10 @@ class LoadLines(LoadXml):
             try:
                 quay = Quay.objects.get(id=quay_id)
             except Quay.DoesNotExist as e:
+                # Quay might be outside loaded area
                 print('Quay %s does not exist' % quay_id)
+                self.skip.append(route_db.id)
+                PointOnRoute.objects.filter(Route=route_db).delete()
                 raise e
 
             point_db = PointOnRoute(
