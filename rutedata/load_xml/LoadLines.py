@@ -206,7 +206,7 @@ class LoadLines(LoadXml):
                 raise e
             except PointOnRoute.DoesNotExist as e:
                 print('PointOnRoute with Route__id %s and order %s does not exist' % (route_id, keys[3]))
-                raise e
+                continue
 
             passing = PassingTime(id=journey_id,
                                   service_journey=journey_db,
