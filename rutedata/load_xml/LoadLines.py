@@ -171,13 +171,18 @@ class LoadLines(LoadXml):
                     print('Invalid journey: %s' % journey.id)
                     journey.delete()
 
-    def load_passings(self, journey, journey_db=None):
+    def existing_passings(self, journey_db):
+        passings = PassingTime.objects.filter(service_journey=journey_db).values_list('id', flat=True)
+        return list(passings)
+
+    def load_passings(self, journey, journey_db=None, output=False):
         """
         Load PassingTime
         Called in loop by load_service_journeys
         Requires PointOnRoute
         :param xml.etree.ElementTree.Element journey:
         :param ServiceJourney journey_db:
+        :param bool output: Show output
         :return:
         """
 
@@ -187,10 +192,23 @@ class LoadLines(LoadXml):
         if journey_db is None:
             journey_db = ServiceJourney.objects.get(id=journey.get('id'))
 
+        existing = self.existing_passings(journey_db)
+
         if not passings:
             raise ValueError('No passings found')
+        count = 1
+        total = len(passings)
+
+        if output:
+            print('%d passings in DB and %d in file' % (len(existing), total))
+            print("")
+
+        if len(existing) == total:
+            return
 
         for timetabled_passing_time in passings:
+            if output:
+                print('Loading passing %d of %d                    ' % (count, total), end='\r')
             journey_id = timetabled_passing_time.get('id')
             point_ref = timetabled_passing_time.find('netex:StopPointInJourneyPatternRef',
                                                      self.namespaces).get('ref')
@@ -220,6 +238,7 @@ class LoadLines(LoadXml):
             if arrival is not None:
                 passing.arrival_time = self.parse_time(arrival.text)
 
+            count += 1
             passing.save()
 
     def load_lines(self, line_filter=None, load_lines=True, load_routes=True, load_service_journeys=True, output=False):
