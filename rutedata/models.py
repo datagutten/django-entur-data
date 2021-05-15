@@ -59,8 +59,8 @@ class Quay(models.Model):
                              related_name='quays')
     name = models.CharField(max_length=200, blank=True, null=True)
     ImportedId = models.CharField(max_length=200, blank=True, null=True)
-    latitude = models.DecimalField(max_digits=11, decimal_places=8)
-    longitude = models.DecimalField(max_digits=11, decimal_places=8)
+    latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     PublicCode = models.CharField(max_length=20, blank=True, null=True)
     Description = models.CharField(max_length=200, blank=True, null=True)
 
@@ -182,3 +182,8 @@ class PassingTime(models.Model):
     def __str__(self):
         return '%s %s %s' % (self.point, self.arrival_time,
                              self.departure_time)
+
+
+"""class Operator(models.Model):
+    id = models.CharField(max_length=60, primary_key=True)
+    name = models.CharField(max_length=200)"""
