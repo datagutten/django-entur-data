@@ -51,13 +51,9 @@ class Line(models.Model):
 
 
 class Quay(models.Model):
-    # Brukes med ulike prefix, med nummer går igjen, f.eks 6021
-    # numeric_id = models.IntegerField(unique=True)
-    # ID med prefix, f.eks OSYD-6021
     id = models.CharField(max_length=20, primary_key=True)
     Stop = models.ForeignKey(Stop, on_delete=models.CASCADE,
-                             related_name='quays')
-    name = models.CharField(max_length=200, blank=True, null=True)
+                             related_name='quays', blank=True, null=True)
     ImportedId = models.CharField(max_length=200, blank=True, null=True)
     latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
@@ -89,20 +85,6 @@ class Route(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.id, self.Name)
-
-
-"""class StopPoint(models.Model):
-    id = models.CharField(max_length=20, primary_key=True)  # OSYD-6021
-    name = models.CharField(max_length=200)
-    QuayRef = models.ForeignKey(Quay,
-                                on_delete=models.CASCADE,
-                                related_name='stoppoints')
-
-    def __str__(self):
-        return '%s %s %s' % (self.name, self.id, self.QuayRef)
-
-    class Meta:
-        ordering = ['name']"""
 
 
 class PointOnRoute(models.Model):

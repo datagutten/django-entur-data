@@ -45,7 +45,7 @@ admin.site.register(Stop, StopAdmin)
 
 
 class QuayAdmin(admin.ModelAdmin):
-    list_display = ('Stop', 'name', 'Description', 'latitude', 'longitude',
+    list_display = ('Stop', 'Description', 'latitude', 'longitude',
                     'id')
     list_filter = ('Stop__TopographicPlace', 'Stop__TransportMode')
 
